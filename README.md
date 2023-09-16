@@ -55,7 +55,7 @@ ATTENTION: In this mode, the screen will not work, you can see the work of u-boo
 ## Running test builds of u-boot.bin by uart
 Install ckermit and write a script
 ```
-cat uartboot-mt6582-uboot.script
+cat uartboot-mt6572-uboot.script
 #!/usr/bin/ckermit
 
 set port /dev/ttyUSB0
@@ -76,7 +76,7 @@ c
 ## Download and run linux kernel by uart
 Write a script for ckermit
 ```
-cat uartboot-mt6582-linux.script
+cat uartboot-mt6572-linux.script
 #!/usr/bin/ckermit
 
 set port /dev/ttyUSB0
@@ -97,7 +97,7 @@ echo {loading fdt}
 PAUSE 1
 
 OUTPUT loadb ${fdt_addr_r} 921600\{13}
-send /home/username/build/linux/../mt6582-device.dtb
+send /home/username/build/linux/../mt6572-device.dtb
 
 echo {loading ramdisk}
 PAUSE 1
@@ -109,7 +109,7 @@ OUTPUT bootz ${loadaddr} 0x85000000 ${fdt_addr_r}\{13}
 c
 ```
 
-## Booting linux kernel from sdcard
+## Booting linux kernel from sdcard (not working)
 Write **boot.cmd** as below
 ```
 env set initrd_high 0x85000000
