@@ -1,6 +1,8 @@
-# Mainline U-Boot on MediaTek mt6582
+# Mainline U-Boot on MediaTek mt6572
 
-Works uart, sd-card.
+Works: uart.
+
+I ported this to run on a fake "S21 Ultra" that was produced by some obscure company.  On mine, the TX and RX pins for uart0 were marked on the board.
 
 ## Build
 ```
@@ -8,23 +10,39 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- mt6572_alps_obscure_defconfig
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- -jx
 ```
 ## Installing in "secondary" bootloader mode
+For this step, you will need a mediatek "mkimage" tool.  This is NOT the u-boot mkimage tool.  It can be found precompiled [here](https://forum.xda-developers.com/t/guide-building-mediatek-boot-img-appending-headers.2753788/#post-52707851).
+
 ```
 # Create a dummy initrd so that the stock bootloader will accept it
 dd if=/dev/random of=ramdisk bs=2048 count=9
 
 # Append a MediaTek header so UBoot will pass a check
-This step is NOT using the u-boot mkimage.  this is some obscure precompiled mediatek tool: (https://forum.xda-developers.com/t/guide-building-mediatek-boot-img-appending-headers.2753788/#post-52707851)
+# Once again: this step is NOT using the u-boot mkimage
 
 mkimage ramdisk ROOTFS > ramdisk.img.mtk
-
 mkimage u-boot.bin KERNEL > u-boot.bin.mtk
-
-# You may need to select other parameters 
-mkbootimg-osm0sis --base 10000000 --pagesize 2048 --kernel_offset 00008000 --ramdisk_offset 01000000 --tags_offset 00000100 --second_offset  00f00000  --kernel u-boot.bin.mtk --ramdisk ramdisk.img.mtk  -o u-boot-mt6582.img
 ```
-Using the SP Flash Tool, flash to the "BOOTING" section.
+Finally, create the android bootimg. You may need to select other parameters if you have a different device.
+```
+cat <<EOF >bootimg.cfg
+bootsize = 0x600000
+pagesize = 0x800
+kerneladdr = 0x10008000
+ramdiskaddr = 0x11000000
+secondaddr = 0x10f00000
+tagsaddr = 0x10000100
+name = C88QKFD001
+cmdline =
+EOF
 
-## Installing in "first" bootloader mode
+abootimg --create u-boot-mt6572.img -f bootimg.cfg -k u-boot.bin.mtk -r ramdisk.img.mtk
+```
+Then use bkerler's [mtkclient](https://github.com/bkerler/mtkclient) to flash to the BOOTIMG partition.
+
+```
+mtk w BOOTIMG u-boot-mt6572.img
+```
+## Installing in "first" bootloader mode (untested)
 
 Find the u-boot-mtk.bin file and flash it with the SP Flash Tool to the "UBOOT" section.
 
