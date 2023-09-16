@@ -1,6 +1,8 @@
 # Mainline U-Boot on MediaTek mt6572
 
-Works: uart.
+Working: uart.
+
+**Not working:** mmc, display, everything else.
 
 I ported this to run on a fake "S21 Ultra" that was produced by some obscure company.  On mine, the TX and RX pins for uart0 were marked on the board.
 
