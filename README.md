@@ -4,8 +4,8 @@ Works uart, sd-card.
 
 ## Build
 ```
-make mt6582_prestigio_pmt5008_3g_defconfig
-make -jx
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- mt6572_alps_obscure_defconfig
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- -jx
 ```
 ## Installing in "secondary" bootloader mode
 ```
@@ -13,6 +13,8 @@ make -jx
 dd if=/dev/random of=ramdisk bs=2048 count=9
 
 # Append a MediaTek header so UBoot will pass a check
+This step is NOT using the u-boot mkimage.  this is some obscure precompiled mediatek tool: (https://forum.xda-developers.com/t/guide-building-mediatek-boot-img-appending-headers.2753788/#post-52707851)
+
 mkimage ramdisk ROOTFS > ramdisk.img.mtk
 
 mkimage u-boot.bin KERNEL > u-boot.bin.mtk
