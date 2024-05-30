@@ -12,7 +12,7 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- mt6572_alps_obscure_defconfig
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- -jx
 ```
 ## Installing in "secondary" bootloader mode
-For this step, you will need a mediatek "mkimage" tool.  This is NOT the u-boot mkimage tool.  It can be found precompiled [here](https://forum.xda-developers.com/t/guide-building-mediatek-boot-img-appending-headers.2753788/#post-52707851).
+For this step, you will need a mediatek "mkimage" tool.  This is NOT the u-boot mkimage tool.  It can be found precompiled [here](https://forum.xda-developers.com/t/guide-building-mediatek-boot-img-appending-headers.2753788/#post-52707851) ([backup](mediatek-mkimage.zip)).
 
 ```
 # Create a dummy initrd so that the stock bootloader will accept it
@@ -44,11 +44,10 @@ Then use bkerler's [mtkclient](https://github.com/bkerler/mtkclient) to flash to
 ```
 mtk w BOOTIMG u-boot-mt6572.img
 ```
-## Installing in "first" bootloader mode (untested)
+## Installing in "first" bootloader mode (untested) (DO NOT ATTEMPT!!!!)
 
-Find the u-boot-mtk.bin file and flash it with the SP Flash Tool to the "UBOOT" section.
-
-ATTENTION: In this mode, the screen will not work, you can see the work of u-boot only by uart.
+>Find the u-boot-mtk.bin file and flash it with the SP Flash Tool to the "UBOOT" section.
+>ATTENTION: In this mode, the screen will not work, you can see the work of u-boot only by uart.
 
 # Usage
 
